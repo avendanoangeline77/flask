@@ -13,9 +13,9 @@ bp = Blueprint('auth', __name__, url_prefix='/auth')
 def register():
     if request.method == 'POST':
         username = request.form['username']
+        Email = request.form['Email']
         password = request.form['password']
-     
-        verificar = request.form['verificar']
+        re_password = request.form['re-password']
        
 
         db = get_db()
@@ -23,12 +23,14 @@ def register():
 
         if not username:
             error = 'Username is required.'
+        elif not Email:
+            error = 'correo electronico is required.'
         elif not password:
             error = 'Password is required.'
-        elif not verificar:
+        elif not re_password:
             error = 'verificacion es requerido.'
 
-        elif password != verificar :
+        elif password != re_password :
             error = 'las contraseñas son incorrectas.'
 
 
@@ -78,7 +80,7 @@ def login():
 @bp.before_app_request
 def load_logged_in_user():
     user_id = session.get('user_id')
-
+  
     if user_id is None:
         g.user = None
     else:
